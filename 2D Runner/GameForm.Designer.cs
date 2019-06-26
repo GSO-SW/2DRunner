@@ -1,6 +1,6 @@
 ﻿namespace _2D_Runner
 {
-    partial class Form1
+    partial class GameForm
     {
         /// <summary>
         /// Erforderliche Designervariable.

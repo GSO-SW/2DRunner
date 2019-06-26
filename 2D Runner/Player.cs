@@ -36,7 +36,10 @@ namespace _2D_Runner
             get { return testBool; }
             set { testBool = value; }
         }
-
+        public int StartPosY       {
+            get { return startposy; }
+            set { startposy = value; }
+        }
         public int PosX
         {
             get { return posx; }
