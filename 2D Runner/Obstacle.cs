@@ -12,16 +12,28 @@ namespace _2D_Runner
 {
    class Obstacle
     {
-        public Obstacle(int thisSizeX)
+        public Rectangle rect2;
+
+
+        public Obstacle(int thisSizeX,int thisPosX, int thisPosY)
         {
             sizex = thisSizeX;
+            posx = thisPosX;
+            posy = thisPosY + (sizey/2);
+
+            int i;
+            int[] HeightObstacle = { 5, 10, 15 };
+            Random r = new Random();
+            i = r.Next(1, 3);
+            sizey = HeightObstacle[i];
         }
-        private int posX;
+        #region Probs
+        private int posx;
 
         public int PosX
         {
-            get { return posX; }
-            set { posX = value; }
+            get { return posx; }
+            set { posx = value; }
         }
         private int posy;
 
@@ -46,19 +58,23 @@ namespace _2D_Runner
             set { sizey = value; }
         }
 
+        #endregion
+
         public void DrawObstacle(PaintEventArgs e)
         {
-            int i;
-            int[] HeightObstacle = { 5, 10, 15 };
-            Random  r = new Random();
-            i = r.Next(1, 3);
-            sizey = HeightObstacle[i];
 
-            
-            
+
+
+            GetRandom();
             Graphics g = e.Graphics;
-            Rectangle rect1 = new Rectangle(new Point(posX, posy), new Size(sizex, sizey));
+            Rectangle rect1 = new Rectangle(new Point(posx, posy), new Size(sizex, sizey));
             g.DrawRectangle(Pens.Black, rect1);
+
+            rect2 = rect1;
+        }
+        private void GetRandom()
+        {
+           
         }
 
 
