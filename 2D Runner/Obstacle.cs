@@ -5,28 +5,30 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace _2D_Runner
 {
-   class Obstacle
+    class Obstacle
     {
         public Rectangle rect2;
 
 
-        public Obstacle(int thisSizeX,int thisPosX, int thisPosY)
+        public Obstacle(int thisPosX)
         {
-            sizex = thisSizeX;
-            posx = thisPosX;
-            posy = thisPosY + (sizey/2);
+            int[] SizeObstacle = { 5, 10, 15 };
 
-            int i;
-            int[] HeightObstacle = { 5, 10, 15 };
-            Random r = new Random();
-            i = r.Next(1, 3);
-            sizey = HeightObstacle[i];
+            sizex = SizeObstacle[new Random().Next(0, 3)];
+            Thread.Sleep(1);
+            sizey = SizeObstacle[new Random().Next(0, 3)];
+            Thread.Sleep(1);
+
+            posx = thisPosX;
+            posy = 200;
         }
+
         #region Probs
         private int posx;
 
@@ -62,22 +64,12 @@ namespace _2D_Runner
 
         public void DrawObstacle(PaintEventArgs e)
         {
-
-
-
-            GetRandom();
             Graphics g = e.Graphics;
-            Rectangle rect1 = new Rectangle(new Point(posx, posy), new Size(sizex, sizey));
-            g.DrawRectangle(Pens.Black, rect1);
-
-            rect2 = rect1;
+            Rectangle rect = new Rectangle(new Point(posx, posy), new Size(sizex, sizey));
+            g.DrawRectangle(Pens.Black, rect);
         }
-        private void GetRandom()
+        public void Random_SizeY()
         {
-           
         }
-
-
-
     }
 }
