@@ -153,9 +153,10 @@ namespace _2D_Runner
             if (posy < startposy && isJumping == false)
             {
 
-                posy += jumpvelocity;
+               // posy += jumpvelocity;
                 jumpAllowed = false;
                 gravity = 0;
+
 
 
 
@@ -194,17 +195,17 @@ namespace _2D_Runner
                 {
 
 
-                    if (jumpvelocity != gravity / 7)
+                    if (jumpvelocity != gravity /15)
                     {
                         posy -= jumpvelocity * 5;
-                        posy += gravity / 5;
-                        gravity++;
+                        posy += gravity / 3;
+                        gravity++ ;
                     }
                     else
                     {
 
-                        posy -= jumpvelocity;
-                        posy += gravity / 2;
+                        posy -= jumpvelocity /2  ;
+                        posy += gravity/4;
 
 
                     }

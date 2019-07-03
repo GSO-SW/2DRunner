@@ -33,7 +33,7 @@ namespace _2D_Runner
             timer.Start();
             DoubleBuffered = true;
 
-            player = new Player(Width/10, Height/3, 1, 2);
+            player = new Player(Width/10, Height/2, 1, 2);
             AnimateImage();
           
 
