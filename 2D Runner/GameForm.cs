@@ -13,9 +13,14 @@ namespace _2D_Runner
 
     public partial class GameForm : Form
     {
-
+        
         Player player;
         List<Obstacle> obstacles;
+       
+      
+
+      
+
 
         public GameForm()
         {
@@ -28,15 +33,17 @@ namespace _2D_Runner
             timer.Start();
             DoubleBuffered = true;
 
-
-            player = new Player(10, 200, 10, 10, 0, 15);
+            player = new Player(Width/10, Height/3, 1, 2);
+            AnimateImage();
+          
 
 
             obstacles = new List<Obstacle>();
 
-            for (int i = 0; i < 10; i++)
-                obstacles.Add(new Obstacle(this.ClientSize.Width + 100 *i));
+            for (int i = 0; i < 1000; i++)
+                obstacles.Add(new Obstacle(this.ClientSize.Width + 100 *i, player.StartPosY + player.SizeY));
             
+
             //foreach (Obstacle obs in obstacles)
             //{
             //    obs.Random_SizeY();
@@ -50,15 +57,23 @@ namespace _2D_Runner
 
         protected override void OnPaint(PaintEventArgs e)
         {
+            
             base.OnPaint(e);
             Graphics g = e.Graphics;
             Font font = new Font("Comic Sans", 24);
 
-            g.DrawString(Convert.ToString(obstacles[1].SizeY), font, Brushes.Black, 300, 5);
+            ImageAnimator.UpdateFrames();
+            g.DrawString(Convert.ToString(obstacles[1].PosY), font, Brushes.Black, 300, 5);
             Pen BlackPen = new Pen(Color.Black, 2);
+           
 
+           
+          
+
+           
+           
             foreach (Obstacle obstacle in obstacles)
-                g.DrawRectangle(Pens.Black, new Rectangle(new Point(obstacle.PosX, obstacle.PosY), new Size(obstacle.SizeX, obstacle.SizeY)));
+             g.DrawRectangle(Pens.Black, new Rectangle(new Point(obstacle.PosX, obstacle.PosY), new Size(obstacle.SizeX, obstacle.SizeY)));
 
             player.DrawPlayer(e);
         }
@@ -72,6 +87,21 @@ namespace _2D_Runner
             player.StartJump();
             Invalidate();
             Refresh();
+        }
+
+        public void AnimateImage()
+        {
+            if (player.AnimatedImage != null)
+            {
+                ImageAnimator.Animate(player.AnimatedImage, new EventHandler(this.OnFrameChanged));
+            }
+
+        }
+        private void OnFrameChanged(object o, EventArgs e)
+        {
+
+
+            this.Invalidate();
         }
 
 

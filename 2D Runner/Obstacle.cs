@@ -13,20 +13,22 @@ namespace _2D_Runner
 {
     class Obstacle
     {
-        public Rectangle rect2;
+       
 
 
-        public Obstacle(int thisPosX)
+        public Obstacle( int thisPosX, int thisSizeY)
         {
             int[] SizeObstacle = { 5, 10, 15 };
 
-            sizex = SizeObstacle[new Random().Next(0, 3)];
+            sizex = 20;
             Thread.Sleep(1);
             sizey = SizeObstacle[new Random().Next(0, 3)];
             Thread.Sleep(1);
-
+            
             posx = thisPosX;
-            posy = 200;
+            posy = thisSizeY - sizey;
+           
+
         }
 
         #region Probs
@@ -64,6 +66,7 @@ namespace _2D_Runner
 
         public void DrawObstacle(PaintEventArgs e)
         {
+           
             Graphics g = e.Graphics;
             Rectangle rect = new Rectangle(new Point(posx, posy), new Size(sizex, sizey));
             g.DrawRectangle(Pens.Black, rect);
