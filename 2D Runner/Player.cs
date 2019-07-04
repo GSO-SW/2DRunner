@@ -14,22 +14,28 @@ namespace _2D_Runner
     {
         Bitmap animatedImage;
 
-        int posx;
-        int posy;
-        int sizex;
-        int sizey;
-        int gravity;
-        int jumpvelocity;
-        int startposy;
+        private int posx;
+        private int posy;
+        private int sizex;
+        private int sizey;
+        private int gravity;
+        private int jumpvelocity;
+        private int startposy;
+        private Rectangle hitbox;
 
         private bool testBool;
         bool isJumping;
-        bool jumpAllowed;
-        Image newImage; 
 
-        int[] gravityScale;
 
         #region Props
+
+
+
+        public Rectangle Hitbox
+        {
+            get { return hitbox; }
+            set { hitbox = value; }
+        }
 
         public Bitmap AnimatedImage
         {
@@ -85,19 +91,20 @@ namespace _2D_Runner
         //f1.ClientSize.Width / 10 - 20, Convert.ToInt32(ClientSize.Height / 1.5 - jumpVelocity)), new Size(20, 50)
         public Player(int posx1, int posy1, int gravity1, int jumpvelocity1)
         {
+            animatedImage = new Bitmap(@"running.gif");
 
-            startposy = posy1;
+            startposy = posy1 - animatedImage.Height;
             PosX = posx1;
             PosY = posy1;
 
             Gravity = 1;
             JumpVelocity = jumpvelocity1;
-            animatedImage = new Bitmap(@"running.gif");
+
 
             isJumping = false;
-            jumpAllowed = true;
+            
 
-            newImage = Properties.Resources.images;
+
 
         }
 
@@ -106,17 +113,16 @@ namespace _2D_Runner
 
             Graphics g = e.Graphics;
             Pen BlackPen = new Pen(Color.Black, 2);
-            DrawImage2FloatRectF(e);
 
-           // g.DrawImage(this.newImage, new Point(100, 50));
+
+            hitbox = new Rectangle(new Point(posx + animatedImage.Width/4,posy), new Size(animatedImage.Width/2, animatedImage.Height));
+            g.DrawRectangle(BlackPen, hitbox);
             g.DrawImage(this.animatedImage, new Point(posx, posy));
             ImageAnimator.UpdateFrames();
 
             Font font = new Font("Comic Sans", 24);
             SizeF textSize = g.MeasureString("IAH71", font);
-            g.DrawString(Convert.ToString(startposy), font, Brushes.Black, 5, 5);
-            g.DrawString(Convert.ToString(posy), font, Brushes.Black, 100, 5);
-            g.DrawString(Convert.ToString(gravity), font, Brushes.Black, 200, 5);
+
         }
 
         public void Jump(Keys e)
@@ -125,12 +131,9 @@ namespace _2D_Runner
             {
                 if (posy == startposy)
                 {
-                    jumpAllowed = true;
-                }
-                if (jumpAllowed)
-                {
                     isJumping = true;
                 }
+
             }
         }
         public void StopJump(Keys e)
@@ -146,15 +149,12 @@ namespace _2D_Runner
         }
         public void GoGround()
         {
-            if (posy > startposy)
-            {
 
-            }
             if (posy < startposy && isJumping == false)
             {
 
-               // posy += jumpvelocity;
-                jumpAllowed = false;
+                //posy += jumpvelocity;
+               
                 gravity = 0;
 
 
@@ -169,7 +169,7 @@ namespace _2D_Runner
             {
                 posy = startposy;
                 //gravity = 0;
-                jumpAllowed = false;
+                
             }
 
         }
@@ -178,15 +178,15 @@ namespace _2D_Runner
         {
 
 
-            if (isJumping == true && jumpAllowed == true)
+            if (isJumping == true)
             {
 
 
-                if (posy >= startposy && gravity > 0)
+                if (posy > startposy && gravity > 0)
                 {
                     gravity = 0;
                     isJumping = false;
-                    // posy = startposy ;
+                    posy = startposy;
 
 
 
@@ -195,17 +195,17 @@ namespace _2D_Runner
                 {
 
 
-                    if (jumpvelocity != gravity /15)
+                    if (jumpvelocity != gravity / 20 || posy == startposy)
                     {
-                        posy -= jumpvelocity * 5;
-                        posy += gravity / 3;
-                        gravity++ ;
+                        posy -= jumpvelocity * 11;
+                        posy += gravity;
+                        gravity += 2;
                     }
                     else
                     {
 
-                        posy -= jumpvelocity /2  ;
-                        posy += gravity/4;
+                        posy -= jumpvelocity;
+                        posy += gravity / 4;
 
 
                     }
@@ -213,21 +213,6 @@ namespace _2D_Runner
                 }
             }
         }
-        public void DrawImage2FloatRectF(PaintEventArgs e)
-        {
 
-          
-
-           
-            float width = 200F;
-            float height = 100F;
-
-           
-            RectangleF srcRect = new RectangleF(50.0F, 0.0F, 50.0F, newImage.Height);
-            GraphicsUnit units = GraphicsUnit.Pixel;
-
-            Graphics g = e.Graphics;
-            g.DrawImage(this.newImage, width, height, srcRect, units);
-        }
     }
 }

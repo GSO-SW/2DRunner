@@ -16,6 +16,7 @@ namespace _2D_Runner
         
         Player player;
         List<Obstacle> obstacles;
+        Obstacle obs;
        
       
 
@@ -32,24 +33,25 @@ namespace _2D_Runner
             timer.Tick += Timer_tick;
             timer.Start();
             DoubleBuffered = true;
-
+            obstacles = new List<Obstacle>();
             player = new Player(Width/10, Height/2, 1, 2);
+           // player.PosY -= player.AnimatedImage.Height;
+            obs = new Obstacle(Width , Height / 2 );
+           // obs.PosY += player.AnimatedImage.Height; ;
             AnimateImage();
+
           
 
+            //obstacles = new List<Obstacle>();
 
-            obstacles = new List<Obstacle>();
+                //for (int i = 0; i < 10; i++)
+                //   obstacles.Add(new Obstacle(this.ClientSize.Width + 100 *i, player.StartPosY + player.SizeY));
 
-            for (int i = 0; i < 1000; i++)
-                obstacles.Add(new Obstacle(this.ClientSize.Width + 100 *i, player.StartPosY + player.SizeY));
-            
 
-            //foreach (Obstacle obs in obstacles)
-            //{
-            //    obs.Random_SizeY();
-            //}
-            //obstacles.Add(new Obstacle(20, Convert.ToInt32(ClientSize.Width), player.StartPosY - (player.SizeY / 2)));
-            //obstacles.Add(new Obstacle(20, Convert.ToInt32(ClientSize.Width) + 30, player.StartPosY - (player.SizeY / 2)));
+
+
+                //obstacles.Add(new Obstacle(20, Convert.ToInt32(ClientSize.Width), player.StartPosY - (player.SizeY / 2)));
+                //obstacles.Add(new Obstacle(20, Convert.ToInt32(ClientSize.Width) + 30, player.StartPosY - (player.SizeY / 2)));
 
 
 
@@ -63,28 +65,33 @@ namespace _2D_Runner
             Font font = new Font("Comic Sans", 24);
 
             ImageAnimator.UpdateFrames();
-            g.DrawString(Convert.ToString(obstacles[1].PosY), font, Brushes.Black, 300, 5);
+            //g.DrawString(Convert.ToString(obstacles[1].PosY), font, Brushes.Black, 300, 5);
             Pen BlackPen = new Pen(Color.Black, 2);
-           
 
-           
-          
 
-           
-           
-            foreach (Obstacle obstacle in obstacles)
-             g.DrawRectangle(Pens.Black, new Rectangle(new Point(obstacle.PosX, obstacle.PosY), new Size(obstacle.SizeX, obstacle.SizeY)));
+            //foreach (Obstacle obs in obstacles)
+            //{
+            //    obs.DrawObstacle(e);
+            //}
+
+            obs.DrawObstacle(e);
+
+
+
+
+
+            ////foreach (Obstacle obstacle in obstacles)
+            //// g.DrawRectangle(Pens.Black, new Rectangle(new Point(obstacle.PosX, obstacle.PosY), new Size(obstacle.SizeX, obstacle.SizeY)));
 
             player.DrawPlayer(e);
         }
         private void Timer_tick(object sender, EventArgs e)
         {
-            foreach (Obstacle obstacle in obstacles)
-                obstacle.PosX--;
-
+            
+            player.StartJump(); 
             player.IsOnGround();
             player.GoGround();
-            player.StartJump();
+           
             Invalidate();
             Refresh();
         }
