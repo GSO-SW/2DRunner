@@ -17,21 +17,22 @@ namespace _2D_Runner
         Player player;
         List<Obstacle> obstacles;
         Obstacle obs;
-       
-      
 
-      
 
+
+
+        Timer timer;
 
         public GameForm()
         {
             //ClientSize, Convert.ToInt32(ClientSize) / 20, Convert.ToInt32(ClientSize) / 5, Convert.ToInt32(ClientSize) / 5, screensize / 3, screensize / 2
             InitializeComponent();
-            Timer timer = new Timer();
+            timer = new Timer();
             timer.Enabled = true;
             timer.Interval = 10;
             timer.Tick += Timer_tick;
             timer.Start();
+            
             DoubleBuffered = true;
             obstacles = new List<Obstacle>();
             player = new Player(Width/10, Height/2, 1, 2);
@@ -39,7 +40,7 @@ namespace _2D_Runner
             obs = new Obstacle(Width , Height / 2 );
            // obs.PosY += player.AnimatedImage.Height; ;
             AnimateImage();
-
+           
           
 
             //obstacles = new List<Obstacle>();
@@ -59,22 +60,23 @@ namespace _2D_Runner
 
         protected override void OnPaint(PaintEventArgs e)
         {
+           
+                base.OnPaint(e);
+                Graphics g = e.Graphics;
+                Font font = new Font("Comic Sans", 24);
+
+                ImageAnimator.UpdateFrames();
+                //g.DrawString(Convert.ToString(obstacles[1].PosY), font, Brushes.Black, 300, 5);
+                Pen BlackPen = new Pen(Color.Black, 2);
+
+
+                //foreach (Obstacle obs in obstacles)
+                //{
+                //    obs.DrawObstacle(e);
+                //}
+
+                obs.DrawObstacle(e);
             
-            base.OnPaint(e);
-            Graphics g = e.Graphics;
-            Font font = new Font("Comic Sans", 24);
-
-            ImageAnimator.UpdateFrames();
-            //g.DrawString(Convert.ToString(obstacles[1].PosY), font, Brushes.Black, 300, 5);
-            Pen BlackPen = new Pen(Color.Black, 2);
-
-
-            //foreach (Obstacle obs in obstacles)
-            //{
-            //    obs.DrawObstacle(e);
-            //}
-
-            obs.DrawObstacle(e);
 
 
 
@@ -91,7 +93,7 @@ namespace _2D_Runner
             player.StartJump(); 
             player.IsOnGround();
             player.GoGround();
-           
+            Gamend();
             Invalidate();
             Refresh();
         }
@@ -108,7 +110,29 @@ namespace _2D_Runner
         {
 
 
-            this.Invalidate();
+            this.Invalidate(player.Hitbox);
+        }
+        private void Gamend()
+        {
+
+
+
+            for (int i = 0; i <= obs.Recs.Count - 1; i++)
+            {
+                if(player.Hitbox.IntersectsWith(obs.Recs[i]))
+                {
+                    player.Dead = true;
+                    ImageAnimator.StopAnimate(player.AnimatedImage, new EventHandler(Timer_tick));
+                }
+            }
+            if(player.Dead)
+            {
+               
+                timer.Stop();
+                player.AnimatedImage = Properties.Resources.dead;
+                Close();
+            }
+            
         }
 
 
@@ -121,9 +145,10 @@ namespace _2D_Runner
 
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
+
             player.Jump(e.KeyCode);
         }
 
-
+      
     }
 }

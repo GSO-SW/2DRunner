@@ -23,10 +23,10 @@ namespace _2D_Runner
         private int startposy;
         private Rectangle hitbox;
 
-        private bool testBool;
+        private bool dead;
         bool isJumping;
 
-
+        
         #region Props
 
 
@@ -43,10 +43,10 @@ namespace _2D_Runner
             set { animatedImage = value; }
         }
 
-        public bool TestBool
+        public bool Dead
         {
-            get { return testBool; }
-            set { testBool = value; }
+            get { return dead; }
+            set { dead = value; }
         }
         public int StartPosY
         {
@@ -100,7 +100,7 @@ namespace _2D_Runner
             Gravity = 1;
             JumpVelocity = jumpvelocity1;
 
-
+            dead = false;
             isJumping = false;
             
 
@@ -116,9 +116,9 @@ namespace _2D_Runner
 
 
             hitbox = new Rectangle(new Point(posx + animatedImage.Width/4,posy), new Size(animatedImage.Width/2, animatedImage.Height));
-            g.DrawRectangle(BlackPen, hitbox);
+           //w g.DrawRectangle(BlackPen, hitbox);
             g.DrawImage(this.animatedImage, new Point(posx, posy));
-            ImageAnimator.UpdateFrames();
+           
 
             Font font = new Font("Comic Sans", 24);
             SizeF textSize = g.MeasureString("IAH71", font);
@@ -213,6 +213,9 @@ namespace _2D_Runner
                 }
             }
         }
-
+        public void IntersectWith(List<Rectangle> r)
+        {
+          
+        }
     }
 }
