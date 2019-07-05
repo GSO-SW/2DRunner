@@ -31,21 +31,21 @@ namespace _2D_Runner
         {
             Graphics g = e.Graphics;
             Pen BlackPen = new Pen(Color.Black, 2);
-            g.DrawImage(groundImage1, new Point(ground1PosX,130));
-            g.DrawImage(groundImage2, new Point(ground2PosX, 130));
+            g.DrawImage(groundImage1, new Point(ground1PosX,150));
+            g.DrawImage(groundImage2, new Point(ground2PosX, 150));
         }
 
         public void LoopGround(int obstaclespeed)
         {
             ground1PosX -= obstaclespeed;
             ground2PosX -= obstaclespeed;
-            if (ground1PosX < + 55-ground1PosX - groundImage1.Width * 2)
+            if (ground1PosX < + 70-ground1PosX - groundImage1.Width * 2)
             {
-                ground1PosX = width;
+                ground1PosX = width - 5;
             }
-            if (ground2PosX < +55 -ground2PosX - groundImage2.Width * 2)
+            if (ground2PosX < +70 -ground2PosX - groundImage2.Width * 2)
             {
-               ground2PosX = width;
+               ground2PosX = width - 5;
             }
 
         }

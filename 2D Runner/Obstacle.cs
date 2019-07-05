@@ -25,7 +25,8 @@ namespace _2D_Runner
         Image obstacle_4;
 
         List<Rectangle> recs;
-        
+
+        int lastObstacleIndex;
         int score;
         int a;
         int b;
@@ -121,7 +122,7 @@ namespace _2D_Runner
             obstacles.Add(obstacle_2);
             obstacles.Add(obstacle_3);
             obstacles.Add(obstacle_4);
-            
+
 
             Positions = new List<int>();
 
@@ -142,8 +143,6 @@ namespace _2D_Runner
 
             sizex = 20;
 
-
-
         }
         public void DrawObstacle(PaintEventArgs e)
         {
@@ -153,9 +152,6 @@ namespace _2D_Runner
 
             g.DrawRectangle(Pens.Black, rect1);
             MoveObstacles(e);
-
-
-
 
         }
         public void CountScore()
@@ -170,19 +166,19 @@ namespace _2D_Runner
         void MoveObstacles(PaintEventArgs e)
         {
 
-            for (int i = 0; i < 3; i++)
-            {             
+            for (int i = 0; i < 4; i++)
+            {
                 Positions[i] -= speed;
-             
-                if (Positions[i] <  - 50)
-                {
+
+
+                if (Positions[i] < -50)
+                {                   
                     if (score > 100)
                     {
                         if (speed != 15)
                         {
                             speed++;
                         }
-
                     }
                     if (score > 300)
                     {
@@ -191,48 +187,34 @@ namespace _2D_Runner
 
                             speed++;
                         }
-                    } 
+                    }
+
                     Positions.RemoveAt(i);
-                    b = r.Next(0, 3);
 
                     if (i != 0)
                     {
-                        a =800+ posx + Positions[i - 1]+ r.Next(r.Next(0, 600));
+                        a = 1600 + posx + Positions[i - 1] + r.Next(r.Next(0, 600));
 
                     }
                     else
                     {
-                        a = 800+ Positions[i]  + r.Next(r.Next(0, 600));
-
-
+                        a = 800 + Positions[i] + r.Next(r.Next(0, 600));
                     }
-
+                    do
+                    {
+                        b = r.Next(0, 4);
+                    } while (b == lastObstacleIndex);
                     Positions.Insert(i, a);
-
                 }
-
                 Rectangle temp = recs[b];
                 temp.X = Positions[i];
                 recs[i] = temp;
                 string scoreText = Convert.ToString("Score: " + score);
                 e.Graphics.DrawString(scoreText, new Font("comic sans", 18), Brushes.Black, posx - 450, 5);
                 e.Graphics.DrawImage(obstacles[b], Positions[i], startposy - obstacles[b].Height - obstacles[b].Height / 3);
-                //if(b == 0)
-                //{
-                //    rec.X = Positions[i];
-                //    rec_2.X = 800;
-                //}
-                //if(b==1)
-                //{
-                //    rec_2.X = Positions[i];
-                //    rec.X = 800;
-                //}
-
-                //e.Graphics.DrawRectangle(new Pen(Color.Black), recs[b]);
-                //e.Graphics.DrawRectangle(new Pen(Color.Black), rec_2);
 
 
-
+                lastObstacleIndex = i;
             }
         }
         void SetRandomPositions()
@@ -243,28 +225,19 @@ namespace _2D_Runner
                     int test;
                     if (i != 0)
                     {
-                        test = 1600 +posx + Positions[i - 1] + r.Next(r.Next(600, 1000));
-                        
-
+                        test = 1600 + posx + Positions[i - 1] + r.Next(r.Next(600, 1000));
 
                     }
                     else
                     {
-                        test = 800 +posx + r.Next(r.Next(600, 1000));
-                       
-                        
+                        test = 800 + posx + r.Next(r.Next(600, 1000));
 
                     }
                     Positions.Add(test);
                     Rectangle temp = recs[i];
                     temp.X = test;
                     recs[i] = temp;
-                    b = r.Next(0, 3);
-
-
-
-
-
+                    b = r.Next(0, 4);
                 }
             }
         }
