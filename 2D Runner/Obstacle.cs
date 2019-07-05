@@ -13,34 +13,24 @@ namespace _2D_Runner
 {
     class Obstacle
     {
-        Random r = new Random();
-        Rectangle rec, rec_2, rec_3, rec_4;
+        //Deklarieren
+        private Random r;
+        private List<int> Positions;
 
-        List<int> Positions;
-        List<Image> obstacles;
+        private Rectangle rec, rec_2, rec_3, rec_4;
+        private List<Rectangle> recs;
 
-        Image obstacle_1;
-        Image obstacle_2;
-        Image obstacle_3;
-        Image obstacle_4;
+        private List<Image> obstacles;
+        private Image obstacle_1, obstacle_2, obstacle_3, obstacle_4;
 
-        List<Rectangle> recs;
+        private int lastObstacleIndex, score, a, b, startposy, test, speed, posx, posy, sizex, sizey;
 
-        int lastObstacleIndex;
-        int score;
-        int a;
-        int b;
-        int startposy;
-        int test;
-        #region Probs
-        private int speed;
-
+        #region Properties
         public int Speed
         {
             get { return speed; }
             set { speed = value; }
         }
-
         public List<Rectangle> Recs
         {
             get { return recs; }
@@ -56,51 +46,37 @@ namespace _2D_Runner
             get { return rec; }
             set { rec = value; }
         }
-        private List<Rectangle> myReactangles;
-
-        public List<Rectangle> MyRectangles
-        {
-            get { return myReactangles; }
-            set { myReactangles = value; }
-        }
-
-        private int posx;
-
         public int PosX
         {
             get { return posx; }
             set { posx = value; }
         }
-        private int posy;
-
         public int PosY
         {
             get { return posy; }
             set { posy = value; }
         }
-        private int sizex;
-
         public int SizeX
         {
             get { return sizex; }
             set { sizex = value; }
         }
-
-        private int sizey;
-
         public int SizeY
         {
             get { return sizey; }
             set { sizey = value; }
         }
-
         #endregion
+        /// <summary>
+        ///  Initialisieren
+        /// </summary>
+        /// <param name="thisPosX">Teil der Clientbreite mit der die X Koordinaten der Hindernisse berechnet werden</param>
+        /// <param name="thisPosY">Teil der Clienthöhe mit der die Y Koordinaten der Hindernisse berechnet werden</param>
         public Obstacle(int thisPosX, int thisPosY)
         {
-            test = 100;
-            speed = 9;
-            recs = new List<Rectangle>();
+            r = new Random();
 
+            recs = new List<Rectangle>();
             rec = new Rectangle(new Point(800, 105), new Size(30, 55));
             rec_2 = new Rectangle(new Point(800, 115), new Size(40, 50));
             rec_3 = new Rectangle(new Point(800, 105), new Size(30, 55));
@@ -109,9 +85,7 @@ namespace _2D_Runner
             recs.Add(rec_2);
             recs.Add(rec_4);
             recs.Add(rec_4);
-
-
-
+ 
             obstacle_1 = Properties.Resources.obstacle_1_Black;
             obstacle_2 = Properties.Resources.obstacle_2_Black;
             obstacle_3 = Properties.Resources.obstacle_1_Black;
@@ -123,27 +97,22 @@ namespace _2D_Runner
             obstacles.Add(obstacle_3);
             obstacles.Add(obstacle_4);
 
-
             Positions = new List<int>();
-
-
             SetRandomPositions();
 
-
-
+            test = 100;
+            speed = 9;
             score = 0;
             speed = 8;
-
-
-
             startposy = thisPosY;
             posx = thisPosX;
             posy = thisPosY;
-
-
             sizex = 20;
-
         }
+        /// <summary>
+        /// Malt die Hindernisse auf die Form
+        /// </summary>
+        /// <param name="e">Ist ein PaintEventArg</param>
         public void DrawObstacle(PaintEventArgs e)
         {
             Graphics g = e.Graphics;
@@ -152,8 +121,10 @@ namespace _2D_Runner
 
             g.DrawRectangle(Pens.Black, rect1);
             MoveObstacles(e);
-
         }
+        /// <summary>
+        /// Zähl die Punkte hoch die der Spieler beim Spielen erreicht
+        /// </summary>
         public void CountScore()
         {
             test -= 6;
@@ -163,16 +134,20 @@ namespace _2D_Runner
                 test = 100;
             }
         }
+        /// <summary>
+        /// Eine Schleife bei der b randomized wird um den Index der Hinternisse und dessen Hitbox auszuwählen und anzeigen zu lassen
+        /// Positions sind randomized Positionen die die Position der Hinternisse[b] angeben
+        /// </summary>
+        /// <param name="e">Ist ein PaintEventArg</param>
         void MoveObstacles(PaintEventArgs e)
         {
-
             for (int i = 0; i < 4; i++)
             {
                 Positions[i] -= speed;
 
-
                 if (Positions[i] < -50)
-                {                   
+                {
+                    //Erhöhung der Geschwindigkeit abhängig vom Score
                     if (score > 100)
                     {
                         if (speed != 15)
@@ -184,7 +159,6 @@ namespace _2D_Runner
                     {
                         if (speed != 17)
                         {
-
                             speed++;
                         }
                     }
@@ -193,6 +167,7 @@ namespace _2D_Runner
 
                     if (i != 0)
                     {
+                        
                         a = 1600 + posx + Positions[i - 1] + r.Next(r.Next(0, 600));
 
                     }
@@ -206,6 +181,7 @@ namespace _2D_Runner
                     } while (b == lastObstacleIndex);
                     Positions.Insert(i, a);
                 }
+
                 Rectangle temp = recs[b];
                 temp.X = Positions[i];
                 recs[i] = temp;
@@ -213,10 +189,12 @@ namespace _2D_Runner
                 e.Graphics.DrawString(scoreText, new Font("comic sans", 18), Brushes.Black, posx - 450, 5);
                 e.Graphics.DrawImage(obstacles[b], Positions[i], startposy - obstacles[b].Height - obstacles[b].Height / 3);
 
-
                 lastObstacleIndex = i;
             }
         }
+        /// <summary>
+        /// Zu beginn werden die Positionen der Hindernisse gesetzt
+        /// </summary>
         void SetRandomPositions()
         {
             for (int i = 0; i < 4; i++)
@@ -226,12 +204,10 @@ namespace _2D_Runner
                     if (i != 0)
                     {
                         test = 1600 + posx + Positions[i - 1] + r.Next(r.Next(600, 1000));
-
                     }
                     else
                     {
                         test = 800 + posx + r.Next(r.Next(600, 1000));
-
                     }
                     Positions.Add(test);
                     Rectangle temp = recs[i];
