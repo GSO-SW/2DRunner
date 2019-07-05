@@ -89,7 +89,7 @@ namespace _2D_Runner
         }
         private void Timer_tick(object sender, EventArgs e)
         {
-            
+            obs.CountScore();
             player.StartJump(); 
             player.IsOnGround();
             player.GoGround();

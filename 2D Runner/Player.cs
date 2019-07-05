@@ -127,11 +127,12 @@ namespace _2D_Runner
 
         public void Jump(Keys e)
         {
-            if (e == Keys.W)
+            if (e == Keys.Space)
             {
                 if (posy == startposy)
                 {
                     isJumping = true;
+                    
                 }
 
             }
@@ -139,7 +140,7 @@ namespace _2D_Runner
         public void StopJump(Keys e)
         {
 
-            if (e == Keys.W)
+            if (e == Keys.Space)
             {
                 isJumping = false;
 
@@ -168,8 +169,9 @@ namespace _2D_Runner
             if (isJumping == false && posy > startposy)
             {
                 posy = startposy;
-                //gravity = 0;
                 
+                //gravity = 0;
+
             }
 
         }

@@ -14,13 +14,15 @@ namespace _2D_Runner
     class Obstacle
     {
         Random r = new Random();
-        Rectangle rec, rec_2;
+        Rectangle rec, rec_2, rec_3, rec_4;
 
         List<int> Positions;
         List<Image> obstacles;
 
         Image obstacle_1;
         Image obstacle_2;
+        Image obstacle_3;
+        Image obstacle_4;
 
         List<Rectangle> recs;
         int speed;
@@ -28,7 +30,7 @@ namespace _2D_Runner
         int a;
         int b;
         int startposy;
-
+        int test;
         #region Probs
         public List<Rectangle> Recs
         {
@@ -86,22 +88,32 @@ namespace _2D_Runner
         #endregion
         public Obstacle(int thisPosX, int thisPosY)
         {
+            test = 100;
             speed = 9;
             recs = new List<Rectangle>();
 
             rec = new Rectangle(new Point(800, 105), new Size(30, 55));
             rec_2 = new Rectangle(new Point(800, 115), new Size(40, 50));
+            rec_3 = new Rectangle(new Point(800, 105), new Size(30, 55));
+            rec_4 = new Rectangle(new Point(800, 115), new Size(40, 50));
             recs.Add(rec);
             recs.Add(rec_2);
+            recs.Add(rec_4);
+            recs.Add(rec_4);
 
 
 
             obstacle_1 = Properties.Resources.obstacle_1_Black;
             obstacle_2 = Properties.Resources.obstacle_2_Black;
+            obstacle_3 = Properties.Resources.obstacle_1_Black;
+            obstacle_4 = Properties.Resources.obstacle_2_Black;
 
             obstacles = new List<Image>();
             obstacles.Add(obstacle_1);
             obstacles.Add(obstacle_2);
+            obstacles.Add(obstacle_3);
+            obstacles.Add(obstacle_4);
+            
 
             Positions = new List<int>();
 
@@ -138,20 +150,25 @@ namespace _2D_Runner
 
 
         }
-
+        public void CountScore()
+        {
+            test -= 6;
+            if (test <= 0)
+            {
+                score++;
+                test = 100;
+            }
+        }
         void MoveObstacles(PaintEventArgs e)
         {
 
-            for (int i = 0; i < 2; i++)
-            {
-                score ++;
-             
+            for (int i = 0; i < 3; i++)
+            {             
                 Positions[i] -= speed;
-                
-
+             
                 if (Positions[i] <  - 50)
                 {
-                    if (score > 1500)
+                    if (score > 100)
                     {
                         if (speed != 15)
                         {
@@ -159,17 +176,25 @@ namespace _2D_Runner
                         }
 
                     }
+                    if (score > 300)
+                    {
+                        if (speed != 17)
+                        {
+
+                            speed++;
+                        }
+                    } 
                     Positions.RemoveAt(i);
-                    b = r.Next(0, 2);
+                    b = r.Next(0, 3);
 
                     if (i != 0)
                     {
-                        a = posx + Positions[i - 1]+ r.Next(r.Next(600, 1000));
+                        a =800+ posx + Positions[i - 1]+ r.Next(r.Next(0, 600));
 
                     }
                     else
                     {
-                        a = Positions[i] + posx + r.Next(r.Next(600, 1000));
+                        a = 800+ Positions[i]  + r.Next(r.Next(0, 600));
 
 
                     }
@@ -182,7 +207,7 @@ namespace _2D_Runner
                 temp.X = Positions[i];
                 recs[i] = temp;
                 string scoreText = Convert.ToString("Score: " + score);
-                e.Graphics.DrawString(scoreText, new Font("comic sans", 18), Brushes.Black, (posx / 3), 5);
+                e.Graphics.DrawString(scoreText, new Font("comic sans", 18), Brushes.Black, posx - 450, 5);
                 e.Graphics.DrawImage(obstacles[b], Positions[i], startposy - obstacles[b].Height - obstacles[b].Height / 3);
                 //if(b == 0)
                 //{
@@ -204,7 +229,7 @@ namespace _2D_Runner
         }
         void SetRandomPositions()
         {
-            for (int i = 0; i < 2; i++)
+            for (int i = 0; i < 4; i++)
             {
                 {
                     int test;
@@ -226,7 +251,7 @@ namespace _2D_Runner
                     Rectangle temp = recs[i];
                     temp.X = test;
                     recs[i] = temp;
-                    b = r.Next(0, 2);
+                    b = r.Next(0, 3);
 
 
 
