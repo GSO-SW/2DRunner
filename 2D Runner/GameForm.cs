@@ -13,7 +13,7 @@ namespace _2D_Runner
 
     public partial class GameForm : Form
     {
-        
+        Ground ground;
         Player player;
         List<Obstacle> obstacles;
         Obstacle obs;
@@ -32,27 +32,28 @@ namespace _2D_Runner
             timer.Interval = 10;
             timer.Tick += Timer_tick;
             timer.Start();
-            
+
             DoubleBuffered = true;
             obstacles = new List<Obstacle>();
-            player = new Player(Width/10, Height/2, 1, 2);
-           // player.PosY -= player.AnimatedImage.Height;
-            obs = new Obstacle(Width , Height / 2 );
-           // obs.PosY += player.AnimatedImage.Height; ;
+            ground = new Ground(Width);
+            player = new Player(Width / 10, Height / 2, 1, 2);
+            // player.PosY -= player.AnimatedImage.Height;
+            obs = new Obstacle(Width, Height / 2);
+            // obs.PosY += player.AnimatedImage.Height; ;
             AnimateImage();
-           
-          
+
+
 
             //obstacles = new List<Obstacle>();
 
-                //for (int i = 0; i < 10; i++)
-                //   obstacles.Add(new Obstacle(this.ClientSize.Width + 100 *i, player.StartPosY + player.SizeY));
+            //for (int i = 0; i < 10; i++)
+            //   obstacles.Add(new Obstacle(this.ClientSize.Width + 100 *i, player.StartPosY + player.SizeY));
 
 
 
 
-                //obstacles.Add(new Obstacle(20, Convert.ToInt32(ClientSize.Width), player.StartPosY - (player.SizeY / 2)));
-                //obstacles.Add(new Obstacle(20, Convert.ToInt32(ClientSize.Width) + 30, player.StartPosY - (player.SizeY / 2)));
+            //obstacles.Add(new Obstacle(20, Convert.ToInt32(ClientSize.Width), player.StartPosY - (player.SizeY / 2)));
+            //obstacles.Add(new Obstacle(20, Convert.ToInt32(ClientSize.Width) + 30, player.StartPosY - (player.SizeY / 2)));
 
 
 
@@ -60,37 +61,20 @@ namespace _2D_Runner
 
         protected override void OnPaint(PaintEventArgs e)
         {
-           
-                base.OnPaint(e);
-                Graphics g = e.Graphics;
-                Font font = new Font("Comic Sans", 24);
+            base.OnPaint(e);
 
-                ImageAnimator.UpdateFrames();
-                //g.DrawString(Convert.ToString(obstacles[1].PosY), font, Brushes.Black, 300, 5);
-                Pen BlackPen = new Pen(Color.Black, 2);
+            Graphics g = e.Graphics;
+            ImageAnimator.UpdateFrames();
 
-
-                //foreach (Obstacle obs in obstacles)
-                //{
-                //    obs.DrawObstacle(e);
-                //}
-
-                obs.DrawObstacle(e);
-            
-
-
-
-
-
-            ////foreach (Obstacle obstacle in obstacles)
-            //// g.DrawRectangle(Pens.Black, new Rectangle(new Point(obstacle.PosX, obstacle.PosY), new Size(obstacle.SizeX, obstacle.SizeY)));
-
+            obs.DrawObstacle(e);
+            ground.DrawGround(e);
             player.DrawPlayer(e);
         }
         private void Timer_tick(object sender, EventArgs e)
         {
+            ground.LoopGround(obs.Speed);
             obs.CountScore();
-            player.StartJump(); 
+            player.StartJump();
             player.IsOnGround();
             player.GoGround();
             Gamend();
@@ -103,6 +87,7 @@ namespace _2D_Runner
             if (player.AnimatedImage != null)
             {
                 ImageAnimator.Animate(player.AnimatedImage, new EventHandler(this.OnFrameChanged));
+                
             }
 
         }
@@ -119,20 +104,20 @@ namespace _2D_Runner
 
             for (int i = 0; i <= obs.Recs.Count - 1; i++)
             {
-                if(player.Hitbox.IntersectsWith(obs.Recs[i]))
+                if (player.Hitbox.IntersectsWith(obs.Recs[i]))
                 {
                     player.Dead = true;
                     ImageAnimator.StopAnimate(player.AnimatedImage, new EventHandler(Timer_tick));
                 }
             }
-            if(player.Dead)
+            if (player.Dead)
             {
-               
+
                 timer.Stop();
                 player.AnimatedImage = Properties.Resources.dead;
                 Close();
             }
-            
+
         }
 
 
@@ -149,6 +134,6 @@ namespace _2D_Runner
             player.Jump(e.KeyCode);
         }
 
-      
+
     }
 }

@@ -215,9 +215,6 @@ namespace _2D_Runner
                 }
             }
         }
-        public void IntersectWith(List<Rectangle> r)
-        {
-          
-        }
+        
     }
 }

@@ -25,13 +25,21 @@ namespace _2D_Runner
         Image obstacle_4;
 
         List<Rectangle> recs;
-        int speed;
+        
         int score;
         int a;
         int b;
         int startposy;
         int test;
         #region Probs
+        private int speed;
+
+        public int Speed
+        {
+            get { return speed; }
+            set { speed = value; }
+        }
+
         public List<Rectangle> Recs
         {
             get { return recs; }

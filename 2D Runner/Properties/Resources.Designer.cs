@@ -63,9 +63,9 @@ namespace _2D_Runner.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Boden {
+        internal static System.Drawing.Bitmap dead {
             get {
-                object obj = ResourceManager.GetObject("Boden", resourceCulture);
+                object obj = ResourceManager.GetObject("dead", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -73,9 +73,9 @@ namespace _2D_Runner.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap dead {
+        internal static System.Drawing.Bitmap Ground_Black {
             get {
-                object obj = ResourceManager.GetObject("dead", resourceCulture);
+                object obj = ResourceManager.GetObject("Ground_Black", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
