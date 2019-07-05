@@ -76,7 +76,7 @@ namespace _2D_Runner
             obs.CountScore();
             player.StartJump();
             player.IsOnGround();
-            player.GoGround();
+           
             Gamend();
             Invalidate();
             Refresh();

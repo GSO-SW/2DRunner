@@ -12,41 +12,28 @@ namespace _2D_Runner
 
     class Player
     {
-        Bitmap animatedImage;
+        private Bitmap animatedImage;
 
-        private int posx;
-        private int posy;
-        private int sizex;
-        private int sizey;
-        private int gravity;
-        private int jumpvelocity;
-        private int startposy;
+        private int posx, posy, gravity, jumpvelocity, startposy;
         private Rectangle hitbox;
 
-        private bool dead;
-        bool isJumping;
+        private bool isJumping, dead;
 
-        
-        #region Props
-
-
-
+        #region Properties
+        public bool Dead
+        {
+            get { return dead; }
+            set {dead = value; }
+        }
         public Rectangle Hitbox
         {
             get { return hitbox; }
             set { hitbox = value; }
         }
-
         public Bitmap AnimatedImage
         {
             get { return animatedImage; }
             set { animatedImage = value; }
-        }
-
-        public bool Dead
-        {
-            get { return dead; }
-            set { dead = value; }
         }
         public int StartPosY
         {
@@ -63,16 +50,6 @@ namespace _2D_Runner
             get { return posy; }
             set { posy = value; }
         }
-        public int SizeX
-        {
-            get { return sizex; }
-            set { sizex = value; }
-        }
-        public int SizeY
-        {
-            get { return sizey; }
-            set { sizey = value; }
-        }
         public int Gravity
         {
             get { return gravity; }
@@ -84,11 +61,13 @@ namespace _2D_Runner
             set { jumpvelocity = value; }
         }
         #endregion
-
-
-
-
-        //f1.ClientSize.Width / 10 - 20, Convert.ToInt32(ClientSize.Height / 1.5 - jumpVelocity)), new Size(20, 50)
+        /// <summary>
+        /// Initialisieren
+        /// </summary>
+        /// <param name="posx1">Ein Teil der Clientbreite mit der weiter berechnet wird</param>
+        /// <param name="posy1">Ein Teil der Clienthöhe mit der weiter berechnet wird</param>
+        /// <param name="gravity1">Gravitationskraft</param>
+        /// <param name="jumpvelocity1">Sprungkraft</param>
         public Player(int posx1, int posy1, int gravity1, int jumpvelocity1)
         {
             animatedImage = new Bitmap(@"running.gif");
@@ -96,107 +75,63 @@ namespace _2D_Runner
             startposy = posy1 - animatedImage.Height;
             PosX = posx1;
             PosY = posy1;
-
             Gravity = 1;
             JumpVelocity = jumpvelocity1;
-
-            dead = false;
+ 
             isJumping = false;
-            
-
-
 
         }
-
+        /// <summary>
+        /// Malt den Spieler auf die Form
+        /// </summary>
+        /// <param name="e">Ist ein PaintEventArg</param>
         public void DrawPlayer(PaintEventArgs e)
         {
-
             Graphics g = e.Graphics;
-            Pen BlackPen = new Pen(Color.Black, 2);
-
-
-            hitbox = new Rectangle(new Point(posx + animatedImage.Width/4,posy), new Size(animatedImage.Width/2, animatedImage.Height));
-           //w g.DrawRectangle(BlackPen, hitbox);
-            g.DrawImage(this.animatedImage, new Point(posx, posy));
-           
-
-            Font font = new Font("Comic Sans", 24);
-            SizeF textSize = g.MeasureString("IAH71", font);
-
+            
+            hitbox = new Rectangle(new Point(posx + animatedImage.Width/4,posy), new Size(animatedImage.Width/2, animatedImage.Height));         
+            g.DrawImage(this.animatedImage, new Point(posx, posy));  
         }
-
+        /// <summary>
+        /// Wenn Space gedrückt wird ist das Springen erlaubt
+        /// </summary>
+        /// <param name="e">Ist eine Taste</param>
         public void Jump(Keys e)
         {
             if (e == Keys.Space)
             {
                 if (posy == startposy)
                 {
-                    isJumping = true;
-                    
+                    isJumping = true;                 
                 }
-
             }
         }
-        public void StopJump(Keys e)
-        {
-
-            if (e == Keys.Space)
-            {
-                isJumping = false;
-
-
-            }
-
-        }
-        public void GoGround()
-        {
-
-            if (posy < startposy && isJumping == false)
-            {
-
-                //posy += jumpvelocity;
-               
-                gravity = 0;
-
-
-
-
-            }
-
-        }
+        /// <summary>
+        /// Wenn der Spieler unterhalb der Starthöhe ist wird seine Höhe wieder auf diese gesetzt
+        /// </summary>
         public void IsOnGround()
         {
             if (isJumping == false && posy > startposy)
             {
-                posy = startposy;
-                
-                //gravity = 0;
-
+                posy = startposy;          
             }
-
         }
-
+        /// <summary>
+        /// Ermöglicht das Springen
+        /// Gravity wird erhöht und läuft gegen Jumpvelocity bis es dafür sorgt, dass der Spieler wieder nach unten Befördert wird
+        /// </summary>
         public void StartJump()
         {
-
-
             if (isJumping == true)
             {
-
-
                 if (posy > startposy && gravity > 0)
                 {
                     gravity = 0;
                     isJumping = false;
                     posy = startposy;
-
-
-
                 }
                 else
                 {
-
-
                     if (jumpvelocity != gravity / 20 || posy == startposy)
                     {
                         posy -= jumpvelocity * 11;
@@ -205,16 +140,11 @@ namespace _2D_Runner
                     }
                     else
                     {
-
                         posy -= jumpvelocity;
                         posy += gravity / 4;
-
-
                     }
-
                 }
             }
-        }
-        
+        }   
     }
 }
