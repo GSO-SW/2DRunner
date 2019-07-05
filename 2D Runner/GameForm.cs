@@ -79,7 +79,7 @@ namespace _2D_Runner
                 ImageAnimator.Animate(player.AnimatedImage, new EventHandler(this.OnFrameChanged));             
             }
         }
-        private void OnFrameChanged(object o, EventArgs e)
+ private void OnFrameChanged(object o, EventArgs e)
         {
             this.Invalidate(player.Hitbox);
         }

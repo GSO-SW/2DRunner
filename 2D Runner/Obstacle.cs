@@ -173,7 +173,7 @@ namespace _2D_Runner
                     }
                     else
                     {
-                        a = 800 + Positions[i] + r.Next(r.Next(0, 600));
+                        a = 1600 + Positions[i] + r.Next(r.Next(0, 600));
                     }
                     do
                     {
