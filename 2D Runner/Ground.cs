@@ -14,11 +14,14 @@ namespace _2D_Runner
     class Ground
     {       
         private Image groundImage1, groundImage2;
-
-        int ground1PosX, ground2PosX, width;
-
+    
+        private int ground1PosX, ground2PosX, width;
+        /// <summary>
+        /// Initialisieren
+        /// </summary>
+        /// <param name="clientsizeWidth">Ist Die Breite des Clients</param>
         public Ground(int clientsizeWidth)
-        {
+        {         
             groundImage1 = Properties.Resources.Ground_Black;
             groundImage2 = Properties.Resources.Ground_Black;
 
@@ -27,6 +30,10 @@ namespace _2D_Runner
 
             width = clientsizeWidth;
         }
+        /// <summary>
+        /// Malt den Boden
+        /// </summary>
+        /// <param name="e">Ist ein PaintEventArg</param>
         public void DrawGround(PaintEventArgs e)
         {
             Graphics g = e.Graphics;
@@ -34,9 +41,13 @@ namespace _2D_Runner
             g.DrawImage(groundImage1, new Point(ground1PosX,150));
             g.DrawImage(groundImage2, new Point(ground2PosX, 150));
         }
-
+        /// <summary>
+        /// Bewegt den Boden und setzt es rechts auserhalb des Clients wenn es aus dem Client ist
+        /// </summary>
+        /// <param name="obstaclespeed">Ist die Geschwindigkeit der Hindernisse</param>
         public void LoopGround(int obstaclespeed)
         {
+            
             ground1PosX -= obstaclespeed;
             ground2PosX -= obstaclespeed;
             if (ground1PosX < + 70-ground1PosX - groundImage1.Width * 2)
