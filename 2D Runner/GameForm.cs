@@ -15,7 +15,6 @@ namespace _2D_Runner
     {
         Ground ground;
         Player player;
-        List<Obstacle> obstacles;
         Obstacle obs;
         Timer timer;
         //Initialisierung
@@ -49,6 +48,11 @@ namespace _2D_Runner
             obs.DrawObstacle(e);
             ground.DrawGround(e);
             player.DrawPlayer(e);
+            if(player.Dead)
+            {     
+              e.Graphics.DrawString("Enter for Restart", new Font("comic sans", 18), Brushes.Black, 100, 5);             
+              e.Graphics.DrawString("Esc to Exit", new Font("comic sans", 18), Brushes.Black, 100, 25);
+            }
         }
         /// <summary>
         /// Die Methoden in der Methode werden pro Tick aufgerufen
@@ -93,15 +97,38 @@ namespace _2D_Runner
                 }
             }
             if (player.Dead)
-            {
-                timer.Stop();
+            {        
                 player.AnimatedImage = Properties.Resources.dead;
-                Close();
+                timer.Stop(); 
             }
         }
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
             player.Jump(e.KeyCode);
+            if(player.Dead)
+            {
+                if(e.KeyData == Keys.Enter)
+                {
+                    InitializeComponent();
+                    timer = new Timer();
+                    timer.Enabled = true;
+                    timer.Interval = 10;
+                    timer.Tick += Timer_tick;
+                    timer.Start();
+                    DoubleBuffered = true;
+
+                    ground = new Ground(Width);
+                    player = new Player(Width / 10, Height / 2, 1, 2);
+                    obs = new Obstacle(Width, Height / 2);
+
+                    AnimateImage();
+                    player.Dead = false;
+                }
+                if(e.KeyCode == Keys.Escape)
+                {
+                    this.Close();
+                }
+            }
         }
 
 
