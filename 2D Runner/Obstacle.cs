@@ -168,12 +168,12 @@ namespace _2D_Runner
                     if (i != 0)
                     {
                         
-                        a = 1600 + posx + Positions[i - 1] + r.Next(r.Next(0, 600));
+                        a = 600 + posx + Positions[i - 1] + r.Next(r.Next(200, 800));
 
                     }
                     else
                     {
-                        a = 1600 + Positions[i] + r.Next(r.Next(0, 600));
+                        a = posx + 400 + Positions[2] + r.Next(r.Next(200, 1000));
                     }
                     do
                     {
